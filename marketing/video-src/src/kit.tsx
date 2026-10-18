@@ -147,7 +147,7 @@ export const Chip: React.FC<{ text: string; start: number; x: number; y: number 
   );
 };
 
-export const EndCard: React.FC<{ line: string; sub?: string; solid?: boolean; noPrice?: boolean; plain?: boolean; cta?: string; price?: string }> = ({ line, solid = false, price = "Rp289.000", noPrice = false, plain = false, cta = "Hubungi kami di", sub = "Tanpa langganan bulanan. Tanpa biaya per karyawan." }) => {
+export const EndCard: React.FC<{ line: string; sub?: string; solid?: boolean; noPrice?: boolean; plain?: boolean; cta?: string; price?: string; priceLabel?: string; phone?: string }> = ({ line, solid = false, price = "Rp289.000", priceLabel = "sekali bayar", phone = "081234556757", noPrice = false, plain = false, cta = "Hubungi kami di", sub = "Tanpa langganan bulanan. Tanpa biaya per karyawan." }) => {
   const frame = useLocal();
   const { fps } = useVideoConfig();
   const a = pop(frame, 4, fps), b = pop(frame, 16, fps), c = pop(frame, 30, fps);
@@ -159,12 +159,12 @@ export const EndCard: React.FC<{ line: string; sub?: string; solid?: boolean; no
       <div style={{ marginTop: 50, textAlign: "center", color: "#fff", fontWeight: 800, fontSize: 70, lineHeight: 1.08, letterSpacing: -2, padding: "0 90px", opacity: b, transform: `translateY(${(1 - b) * 30}px)` }}>{line}</div>
       {!noPrice && (      <div style={{ marginTop: 56, background: C.amber, color: "#2b1a00", borderRadius: 36, padding: "30px 60px", textAlign: "center", opacity: c, transform: `scale(${(0.8 + c * 0.2) * pulse})` }}>
         <div style={{ fontWeight: 800, fontSize: 112, letterSpacing: -4, lineHeight: 1 }}>{price}</div>
-        <div style={{ fontWeight: 600, fontSize: 40, marginTop: 8 }}>sekali bayar</div>
+        <div style={{ fontWeight: 600, fontSize: 40, marginTop: 8 }}>{priceLabel}</div>
       </div>)}
       {sub !== "" && <div style={{ marginTop: noPrice ? 40 : 34, position: "relative", zIndex: 1, color: C.b200, fontSize: 36, textAlign: "center", padding: "0 100px", opacity: fade(frame, 30, 44), fontWeight: 600 }}>{sub}</div>}
       {!plain && <div style={{ marginTop: 44, position: "relative", zIndex: 1, background: "#fff", color: C.b800, borderRadius: 34, padding: "26px 56px", textAlign: "center", opacity: fade(frame, 44, 58), transform: `scale(${pulse})` }}>
         <div style={{ fontWeight: 600, fontSize: 38 }}>{cta}</div>
-        <div style={{ fontWeight: 800, fontSize: 76, letterSpacing: -1, lineHeight: 1.1, marginTop: 4 }}>081234556757</div>
+        <div style={{ fontWeight: 800, fontSize: 76, letterSpacing: -1, lineHeight: 1.1, marginTop: 4 }}>{phone}</div>
       </div>}
     </AbsoluteFill>
   );

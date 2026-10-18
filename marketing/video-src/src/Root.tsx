@@ -6,6 +6,7 @@ import { CONFIGS } from "./Konten30";
 import { CONFIGS2 } from "./Konten60";
 import { CONFIGS3 } from "./Konten90";
 import { CONFIGS4 } from "./KontenF";
+import { CONFIGS_ADS } from "./KontenAds";
 import { K04, K05, K06, K07, K08, K09, K10 } from "./Animasi";
 import { V4 } from "./Rekaman";
 import { V5, V6, V7 } from "./Rekaman2";
@@ -14,6 +15,7 @@ import { V8, V9, V10 } from "./Rekaman3";
 const base = { fps: 30, width: 1080, height: 1920, durationInFrames: 540 };
 const N = [...CONFIGS, ...CONFIGS2].map((c) => ({ id: c.id, ...makeVideo(c) }));
 const E = [...CONFIGS3, ...CONFIGS4].map((c) => ({ id: c.id, ...makeVideo(c, 615) }));
+const A = CONFIGS_ADS.map((c) => ({ id: c.id, ...makeVideo(c, 735) }));
 export const Root: React.FC = () => (
   <>
     <Composition id="V1-chat-tanggal-25" component={V1} {...base} />
@@ -46,6 +48,6 @@ export const Root: React.FC = () => (
     <Composition id="K09-buku-absen-bersih" component={K09 as React.FC<any>} {...base} durationInFrames={540} defaultProps={{ end: "bersih" }} />
     <Composition id="K10-hitung-gaji-wa" component={K10 as React.FC<any>} {...base} durationInFrames={540} defaultProps={{ end: "wa" }} />
     <Composition id="K10-hitung-gaji-bersih" component={K10 as React.FC<any>} {...base} durationInFrames={540} defaultProps={{ end: "bersih" }} />
-    {[...N, ...E].map((n) => React.createElement(Composition as React.FC<any>, { key: n.id, id: n.id, component: n.C, ...base, durationInFrames: n.frames }))}
+    {[...N, ...E, ...A].map((n) => React.createElement(Composition as React.FC<any>, { key: n.id, id: n.id, component: n.C, ...base, durationInFrames: n.frames }))}
   </>
 );

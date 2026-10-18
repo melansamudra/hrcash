@@ -6,7 +6,7 @@ import { Versus } from "./Animasi";
 import { Caption, Clip, Note, PhoneFrame, SelfieClips, Top as RecTop } from "./Rekaman";
 
 export type Theme = "dark" | "amber" | "light";
-export type End = "harga" | "bersih";
+export type End = "harga" | "bersih" | "iklan";
 type Tile = { label: string; value: string; chip?: string };
 type S =
   | { k: "chat"; head: string; msgs: { who?: string; text: string; time: string; out?: boolean }[] }
@@ -155,7 +155,7 @@ export const makeVideo = (cfg: Cfg, minFrames = 0): { C: React.FC; frames: numbe
   let t = 0;
   cfg.scenes.forEach((s) => { starts.push(t); t += dur(s) - OV; });
   const endFrom = t;
-  const endD = Math.max(cfg.end === "harga" ? 150 : 110, minFrames - endFrom);
+  const endD = Math.max(cfg.end === "harga" || cfg.end === "iklan" ? 150 : 110, minFrames - endFrom);
   const frames = endFrom + endD;
   const Comp: React.FC = () => (
     <FontGate>
@@ -169,7 +169,7 @@ export const makeVideo = (cfg: Cfg, minFrames = 0): { C: React.FC; frames: numbe
         );
       })}
       <Scene from={endFrom} dur={endD}>
-        {cfg.end === "harga" ? <EndCard price="Rp349.000" solid={cfg.theme !== "dark"} line={cfg.line} /> : <EndCard noPrice plain solid={cfg.theme !== "dark"} sub="" line={cfg.line} />}
+        {cfg.end === "iklan" ? <EndCard price="Rp349.000" priceLabel="sekali beli, bukan langganan" sub="Tanpa biaya bulanan. Tanpa biaya per karyawan." cta="Chat WhatsApp sekarang" phone="0812-3455-6757" solid={cfg.theme !== "dark"} line={cfg.line} /> : cfg.end === "harga" ? <EndCard price="Rp349.000" solid={cfg.theme !== "dark"} line={cfg.line} /> : <EndCard noPrice plain solid={cfg.theme !== "dark"} sub="" line={cfg.line} />}
       </Scene>
     </FontGate>
   );
