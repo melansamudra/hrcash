@@ -13,6 +13,8 @@ const OUT = path.resolve(process.argv[2] ?? "proposal-hrcash.pdf");
 const NAMA = process.argv[3] ?? "";
 const TGL = process.argv[4] ?? new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Jakarta" });
 const WA = "0812-3455-6757";
+const qrPortal = await QRCode.toDataURL("https://hr.cashimpact.id/demo-portal", { margin: 1, width: 300, color: { dark: "#17436a", light: "#ffffff" } });
+const qrDash = await QRCode.toDataURL("https://hr.cashimpact.id/demo", { margin: 1, width: 300, color: { dark: "#17436a", light: "#ffffff" } });
 const qr = await QRCode.toDataURL("https://wa.me/6281234556757?text=Halo%2C%20saya%20tertarik%20dengan%20HrCash", { margin: 1, width: 360, color: { dark: "#17436a", light: "#ffffff" } });
 
 const ic = {
@@ -24,7 +26,7 @@ const ic = {
   wa: `<svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 3C9 3 3.4 8.6 3.4 15.5c0 2.4.7 4.7 1.9 6.6L3 29l7.1-2.2a12.6 12.6 0 006 1.5c7 0 12.6-5.6 12.6-12.6S23 3 16 3zm0 22.9c-1.9 0-3.7-.5-5.3-1.5l-.4-.2-4.2 1.3 1.4-4-.3-.4a10.2 10.2 0 01-1.6-5.5C5.6 9.9 10.3 5.2 16 5.2s10.4 4.7 10.4 10.3S21.7 25.9 16 25.9zm5.7-7.6c-.3-.2-1.8-.9-2.1-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.4 8.4 0 01-4.2-3.7c-.3-.6.3-.5.9-1.7.1-.2 0-.4 0-.5l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 00-.9.4 3.7 3.7 0 00-1.1 2.7c0 1.6 1.1 3.2 1.3 3.4s2.3 3.5 5.6 4.9c2 .9 2.8.9 3.8.8.6-.1 1.8-.7 2.1-1.4s.3-1.3.2-1.4-.3-.2-.6-.4z"/></svg>`,
 };
 const logo = (dark = true) => `<div class="logo ${dark ? "" : "lt"}"><span class="lm">${ic.check}</span>HrCash</div>`;
-let pageNo = 0; const TOTAL = 7;
+let pageNo = 0; const TOTAL = 8;
 const pg = (cls, inner, foot = true) => { pageNo++; return `<section class="pg ${cls}">${inner}${foot ? `<div class="foot"><span>HrCash by Cash Impact</span><span>${NAMA ? "Proposal untuk " + NAMA : "Proposal Penawaran"}</span><span>Hal. ${pageNo}/${TOTAL}</span></div>` : ""}</section>`; };
 
 const menus = ["Kehadiran (Check In/Out)", "Papan Info", "Cuti", "Lembur", "Gaji dan slip", "Surat Peringatan", "Surat Keterangan", "Kegiatan Karyawan", "Penugasan", "Reimburse", "Jadwal Kerja", "Profil Saya"];
@@ -58,6 +60,7 @@ ul.tick{list-style:none;padding:0;margin-top:8px}ul.tick li{display:flex;gap:8px
 table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12.5px}th{background:var(--b100);text-align:left;padding:9px 12px;font-weight:800}td{padding:9px 12px;border-bottom:1px solid #e6eef6;font-weight:600}td.g{color:var(--ok);font-weight:800}td.r{color:var(--neg);font-weight:800}
 .note{font-size:11px;color:var(--sub);margin-top:8px;line-height:1.45;font-weight:600}
 .faq .q{border-bottom:1px solid #e6eef6;padding:9px 0}.faq b{font-size:13px;display:block}.faq span{font-size:12px;color:var(--sub);font-weight:600;line-height:1.45;display:block;margin-top:2px}
+.demo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8mm}.dc{border:1.5px solid #dbe6f1;border-radius:18px;padding:18px;background:#fff}.dc h3{font-size:17px;font-weight:800;letter-spacing:-.4px}.dc p{font-size:12px;color:var(--sub);font-weight:600;line-height:1.45;margin-top:6px}.dc img{width:34mm;height:34mm;border-radius:10px;border:1px solid #dbe6f1;margin-top:10px}.dc a{display:block;margin-top:10px;font-size:13px;font-weight:800;color:var(--b700);word-break:break-all;text-decoration:none}.pin{margin-top:10px;background:var(--b50);border-radius:12px;padding:10px 12px;font-size:12px;font-weight:700;line-height:1.5}.pin b{color:var(--b900)}
 .cta{margin-top:7mm;background:var(--b50);border-radius:20px;padding:18px 22px;display:flex;gap:20px;align-items:center}.cta img{width:36mm;height:36mm;border-radius:10px;border:1px solid #dbe6f1}.cta h3{font-size:20px;font-weight:800;letter-spacing:-.6px}.cta .wa{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:24px;font-weight:800;color:var(--b900)}.cta .wa svg{width:30px;height:30px;color:#1faa59}.cta p{font-size:12px;color:var(--sub);font-weight:600;margin-top:6px;line-height:1.45}
 </style></head><body>
 ${pg("cover", `${logo()}
@@ -107,6 +110,18 @@ ${pg("", `${logo(false)}<h2>Investasi: <em>sekali beli</em></h2>
    <tr><td>3 tahun</td><td class="r">Rp3.600.000</td><td class="g">Rp349.000</td></tr></table>
   <div class="note">*Ilustrasi hitungan: langganan Rp10.000 per karyawan per bulan x 10 karyawan x 12 bulan. Angka ini hanya contoh, bukan harga pihak tertentu. Bandingkan dengan tagihan yang Anda bayar saat ini.</div>
   <div class="quote" style="margin-top:8mm">Biaya yang sama, <em>tanpa tagihan bulanan</em> dan tanpa tambahan biaya saat tim bertambah.</div>`)}
+${pg("", `${logo(false)}<h2>Coba <em>demo</em> sekarang</h2>
+  <div class="lead">Lihat langsung bagaimana HrCash bekerja, dari sisi karyawan dan sisi pemilik usaha. Semua data adalah data contoh.</div>
+  <div class="demo">
+   <div class="dc"><h3>1. Portal Karyawan</h3><p>Rasakan pengalaman karyawan: absen selfie, slip gaji, cuti, lembur, dan jadwal.</p>
+     <img src="${qrPortal}"><a href="https://hr.cashimpact.id/demo-portal">hr.cashimpact.id/demo-portal</a>
+     <div class="pin">Cara masuk:<br>1. Pilih nama <b>Budi Santoso</b><br>2. Masukkan PIN <b>1111</b></div></div>
+   <div class="dc"><h3>2. Dashboard Pemilik Usaha</h3><p>Lihat dashboard, rekap presensi, penggajian, dan laporan dengan data contoh.</p>
+     <img src="${qrDash}"><a href="https://hr.cashimpact.id/demo">hr.cashimpact.id/demo</a>
+     <div class="pin">Langsung masuk otomatis, tanpa daftar.<br>Bisnis contoh: <b>Toko Demo Maju Jaya</b></div></div>
+  </div>
+  <div class="quote" style="margin-top:8mm">Coba sendiri dulu, <em>baru putuskan.</em></div>
+  <div class="note">Akun demo dipakai bersama dan berisi data contoh. Jangan memasukkan data pribadi atau data usaha asli. Data demo dapat direset sewaktu-waktu.</div>`)}
 ${pg("", `${logo(false)}<h2>Pertanyaan umum &amp; <em>langkah berikutnya</em></h2>
   <div class="faq" style="margin-top:6mm">
    <div class="q"><b>Apakah karyawan harus install aplikasi?</b><span>Tidak. Karyawan cukup membuka link di browser HP (Android atau iPhone).</span></div>
