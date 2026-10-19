@@ -45,6 +45,7 @@ h2{font-size:30px;font-weight:800;letter-spacing:-1px;line-height:1.1;margin-top
 .cover{background:radial-gradient(700px 500px at 85% 10%,#3f79ad 0%,transparent 60%),linear-gradient(165deg,#1f5287,#0b2237);color:#fff}.cover .foot{color:#c4d8ee;border-color:rgba(255,255,255,.25)}
 .cover h1{font-size:54px;font-weight:800;letter-spacing:-2px;line-height:1.02;margin-top:34mm}.cover h1 em{font-style:normal;color:var(--amber)}.cover .sub{font-size:19px;color:var(--b200);margin-top:14px;font-weight:600;line-height:1.4;max-width:120mm}
 .offer{margin-top:14mm;background:var(--amber);color:#2b1a00;border-radius:18px;padding:16px 22px;display:inline-block;align-self:flex-start}.offer b{font-size:44px;letter-spacing:-2px;line-height:1;display:block}.offer span{font-size:14px;font-weight:800}
+.chips{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}.chips span{background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.35);color:#fff;font-size:13px;font-weight:800;border-radius:99px;padding:7px 16px}
 .meta{margin-top:12mm;font-size:13px;line-height:1.7;color:var(--b200)}.meta b{color:#fff}
 .cphone{position:absolute;right:14mm;bottom:22mm;width:62mm;border:7px solid #0b1623;border-radius:30px;background:#0b1623;box-shadow:0 20px 40px rgba(0,0,0,.4);overflow:hidden;transform:rotate(4deg)}.cphone img{width:100%;display:block;margin-top:-6%}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10mm}
@@ -56,7 +57,7 @@ ul.tick{list-style:none;padding:0;margin-top:8px}ul.tick li{display:flex;gap:8px
 .split{display:grid;grid-template-columns:1fr 62mm;gap:14px;margin-top:8mm;align-items:start}.ph{border:6px solid #0b1623;border-radius:26px;background:#0b1623;overflow:hidden;box-shadow:0 14px 30px rgba(16,36,58,.25)}.ph img{width:100%;display:block;margin-top:-6%}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8mm}.col{border-radius:16px;padding:16px 18px}.col.a{background:var(--b50)}.col.b{background:var(--b900);color:#fff}.col h3{font-size:15px;font-weight:800;margin-bottom:6px}.col.b ul.tick li{color:#fff}
 .steps{margin-top:9mm;display:flex;flex-direction:column;gap:11px}.st{display:flex;gap:14px;align-items:flex-start;border:1.5px solid #dbe6f1;border-radius:16px;padding:14px 18px}.st .n{width:34px;height:34px;border-radius:50%;background:var(--amber);color:#2b1a00;font-weight:800;display:grid;place-items:center;flex:none;font-size:16px}.st b{font-size:15px;display:block}.st span{font-size:12.5px;color:var(--sub);font-weight:600;line-height:1.45;display:block;margin-top:3px}
-.price{margin-top:9mm;background:linear-gradient(160deg,#1f5287,#0b2237);color:#fff;border-radius:22px;padding:24px 28px;display:flex;gap:20px;align-items:center;justify-content:space-between}.price .big b{font-size:58px;letter-spacing:-3px;color:var(--amber);line-height:1;display:block}.price .big span{font-size:16px;font-weight:800}.price ul.tick li{color:#fff;font-size:12.5px}
+.price{margin-top:6mm;background:linear-gradient(160deg,#1f5287,#0b2237);color:#fff;border-radius:22px;padding:24px 28px;display:flex;gap:20px;align-items:center;justify-content:space-between}.price .big b{font-size:50px;letter-spacing:-3px;color:var(--amber);line-height:1;display:block}.price .big span{font-size:16px;font-weight:800}.price ul.tick li{color:#fff;font-size:12.5px}
 table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12.5px}th{background:var(--b100);text-align:left;padding:9px 12px;font-weight:800}td{padding:9px 12px;border-bottom:1px solid #e6eef6;font-weight:600}td.g{color:var(--ok);font-weight:800}td.r{color:var(--neg);font-weight:800}
 .note{font-size:11px;color:var(--sub);margin-top:8px;line-height:1.45;font-weight:600}
 .faq .q{border-bottom:1px solid #e6eef6;padding:9px 0}.faq b{font-size:13px;display:block}.faq span{font-size:12px;color:var(--sub);font-weight:600;line-height:1.45;display:block;margin-top:2px}
@@ -67,6 +68,7 @@ ${pg("cover", `${logo()}
   <h1>Proposal<br><em>Penawaran</em></h1>
   <div class="sub">Absensi selfie + lokasi, laporan gaji otomatis, dan Portal Karyawan untuk usaha Anda.</div>
   <div class="offer"><b>Rp349.000</b><span>sekali beli, bukan langganan</span></div>
+  <div class="chips"><span>Tanpa install aplikasi</span><span>Dibantu setup sampai bisa</span></div>
   ${NAMA ? `<div class="meta"><div>Disiapkan untuk: <b>${NAMA}</b></div><div>Tanggal: <b>${TGL}</b></div><div>Kontak: <b>WhatsApp ${WA}</b></div></div>` : ""}
   <div class="cphone"><img src="${img("shot-home.jpg")}"></div>`)}
 ${pg("", `${logo(false)}<h2>Tantangan yang sering <em>dihadapi pemilik usaha</em></h2>
@@ -96,20 +98,20 @@ ${pg("", `${logo(false)}<h2>Cara kerja: <em>mudah dan cepat</em></h2>
   <div class="steps">
    <div class="st"><div class="n">1</div><div><b>Konsultasi singkat via WhatsApp</b><span>Ceritakan jumlah karyawan dan kebutuhan usaha Anda. Kami jawab pertanyaan Anda.</span></div></div>
    <div class="st"><div class="n">2</div><div><b>Pembayaran sekali beli</b><span>Rp349.000, tanpa biaya bulanan. Metode pembayaran dikonfirmasi melalui WhatsApp.</span></div></div>
-   <div class="st"><div class="n">3</div><div><b>Aktivasi dan data karyawan</b><span>Akun diaktifkan setelah pembayaran dikonfirmasi. Anda mengisi data usaha dan karyawan.</span></div></div>
+   <div class="st"><div class="n">3</div><div><b>Aktivasi dan data karyawan</b><span>Akun diaktifkan setelah pembayaran dikonfirmasi. Bingung mengisi data karyawan atau ada kendala? Kami bantu setup sampai Anda bisa.</span></div></div>
    <div class="st"><div class="n">4</div><div><b>Bagikan link ke karyawan</b><span>Satu link untuk semua karyawan. Mereka masuk dengan PIN dan langsung bisa absen selfie.</span></div></div>
    <div class="st"><div class="n">5</div><div><b>Laporan terkumpul otomatis</b><span>Rekap kehadiran, lembur, dan laporan gaji tersedia di dashboard Anda.</span></div></div>
   </div>`)}
 ${pg("", `${logo(false)}<h2>Investasi: <em>sekali beli</em></h2>
   <div class="price"><div class="big"><b>Rp349.000</b><span>sekali beli, bukan langganan</span></div>
-   <ul class="tick" style="flex:1;max-width:300px"><li>Tanpa biaya bulanan</li><li>Tanpa biaya per karyawan</li><li>Tanpa install aplikasi</li><li>Absen selfie + lokasi</li><li>Laporan gaji dan Portal Karyawan</li></ul></div>
-  <h3 style="margin-top:9mm;font-size:16px;font-weight:800">Ilustrasi perbandingan biaya</h3>
+   <ul class="tick" style="flex:1;max-width:360px"><li>Tanpa biaya bulanan</li><li>Tanpa biaya per karyawan</li><li>Tanpa install aplikasi</li><li>Absen selfie + lokasi</li><li>Laporan gaji dan Portal Karyawan</li><li>Dibantu setup sampai bisa</li></ul></div>
+  <h3 style="margin-top:6mm;font-size:16px;font-weight:800">Ilustrasi perbandingan biaya</h3>
   <table><tr><th>Lama pemakaian (10 karyawan)</th><th>Langganan per karyawan*</th><th>HrCash sekali beli</th></tr>
    <tr><td>1 tahun</td><td class="r">Rp1.200.000</td><td class="g">Rp349.000</td></tr>
    <tr><td>2 tahun</td><td class="r">Rp2.400.000</td><td class="g">Rp349.000</td></tr>
    <tr><td>3 tahun</td><td class="r">Rp3.600.000</td><td class="g">Rp349.000</td></tr></table>
   <div class="note">*Ilustrasi hitungan: langganan Rp10.000 per karyawan per bulan x 10 karyawan x 12 bulan. Angka ini hanya contoh, bukan harga pihak tertentu. Bandingkan dengan tagihan yang Anda bayar saat ini.</div>
-  <div class="quote" style="margin-top:8mm">Biaya yang sama, <em>tanpa tagihan bulanan</em> dan tanpa tambahan biaya saat tim bertambah.</div>`)}
+  <div class="quote" style="margin-top:5mm">Biaya yang sama, <em>tanpa tagihan bulanan</em> dan tanpa tambahan biaya saat tim bertambah.</div>`)}
 ${pg("", `${logo(false)}<h2>Coba <em>demo</em> sekarang</h2>
   <div class="lead">Lihat langsung bagaimana HrCash bekerja, dari sisi karyawan dan sisi pemilik usaha. Semua data adalah data contoh.</div>
   <div class="demo">
@@ -128,9 +130,10 @@ ${pg("", `${logo(false)}<h2>Pertanyaan umum &amp; <em>langkah berikutnya</em></h
    <div class="q"><b>Bagaimana jika karyawan lupa PIN?</b><span>Admin dapat mengatur ulang PIN karyawan.</span></div>
    <div class="q"><b>Apakah ada biaya bulanan atau biaya per karyawan?</b><span>Tidak. Biayanya Rp349.000 sekali beli.</span></div>
    <div class="q"><b>Apakah data tersimpan jika HP karyawan rusak atau diganti?</b><span>Ya. Data tersimpan online di sistem, bukan di HP karyawan.</span></div>
+   <div class="q"><b>Bingung mengisi data karyawan atau ada kendala saat mulai?</b><span>Tenang. Kami bantu setup sampai Anda bisa memakainya.</span></div>
    <div class="q"><b>Bisa dipakai untuk usaha apa saja?</b><span>Cocok untuk warung, toko, bengkel, salon, kafe, laundry, klinik, dan usaha kecil lain yang memiliki karyawan.</span></div>
   </div>
-  <div class="cta"><img src="${qr}"><div><h3>Mulai sekarang</h3><div class="wa">${ic.wa}${WA}</div><p>Scan kode QR atau chat WhatsApp. Sebutkan nama usaha dan jumlah karyawan Anda.</p></div></div>
+  <div class="cta"><img src="${qr}"><div><h3>Mulai sekarang</h3><div class="wa">${ic.wa}${WA}</div><p>Scan kode QR atau chat WhatsApp. Sebutkan nama usaha dan jumlah karyawan Anda. Bingung atau ada kendala? Kami bantu setup sampai Anda bisa.</p></div></div>
   <div class="note" style="margin-top:8mm">Harga dan ketentuan dapat berubah sewaktu-waktu. Konfirmasi harga terbaru melalui WhatsApp. Terima kasih atas kesempatan yang diberikan.</div>`)}
 </body></html>`;
 
