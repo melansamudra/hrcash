@@ -23,8 +23,8 @@ const phone = (f, w, h) => `<div class="phone" style="width:${w}px;height:${h}px
 const slides = [
   // 1 cover
   { bg: "dark", n: `${logo}<div class="kick">Untuk pemilik usaha yang punya karyawan</div>
-    <h1>Proposal<br><em>Penawaran</em></h1>
-    <div class="sub">Absensi selfie + lokasi, laporan gaji otomatis, dan Portal Karyawan.</div>
+    <h1>Absen &amp; Gaji<br><em>Otomatis</em></h1>
+    <div class="sub">Absen selfie + lokasi, laporan gaji, dan Portal Karyawan. Cukup dari HP karyawan.</div>
     <div class="offer"><b>Rp349.000</b><span>sekali beli, bukan langganan</span></div>
     <div class="chips"><span>Tanpa install aplikasi</span><span>Dibantu setup sampai bisa</span></div>
     <div class="grow"></div>${phone("shot-home.jpg", 400, 640)}${swipe}` },
@@ -95,7 +95,7 @@ for (let i = 0; i < slides.length; i++) {
   const pg = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
   await pg.setContent(`<!doctype html><html><head><meta charset="utf-8"><style>${css}</style></head><body><div class="p ${slides[i].bg} ${[2, 3, 5, 6].includes(i) ? "z" : i === 4 ? "z5" : ""}">${em(slides[i].n)}</div></body></html>`);
   await pg.evaluate(() => document.fonts.ready);
-  await pg.screenshot({ path: path.join(OUT, `tiktok-proposal-${i + 1}.png`) });
+  await pg.screenshot({ path: path.join(OUT, `tiktok-carousel-${i + 1}.png`) });
   await pg.close();
 }
 await browser.close();
