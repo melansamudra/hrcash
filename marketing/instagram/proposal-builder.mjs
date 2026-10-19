@@ -10,7 +10,7 @@ const fontDir = path.dirname(require.resolve("@fontsource/inter/package.json")) 
 const font = (w) => pathToFileURL(`${fontDir}/inter-latin-${w}-normal.woff2`).href;
 const img = (f) => "data:image/jpeg;base64," + readFileSync(path.resolve(f)).toString("base64");
 const OUT = path.resolve(process.argv[2] ?? "proposal-hrcash.pdf");
-const NAMA = process.argv[3] ?? "Bapak/Ibu Pemilik Usaha";
+const NAMA = process.argv[3] ?? "";
 const TGL = process.argv[4] ?? new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Jakarta" });
 const WA = "0812-3455-6757";
 const qr = await QRCode.toDataURL("https://wa.me/6281234556757?text=Halo%2C%20saya%20tertarik%20dengan%20HrCash", { margin: 1, width: 360, color: { dark: "#17436a", light: "#ffffff" } });
@@ -25,7 +25,7 @@ const ic = {
 };
 const logo = (dark = true) => `<div class="logo ${dark ? "" : "lt"}"><span class="lm">${ic.check}</span>HrCash</div>`;
 let pageNo = 0; const TOTAL = 7;
-const pg = (cls, inner, foot = true) => { pageNo++; return `<section class="pg ${cls}">${inner}${foot ? `<div class="foot"><span>HrCash by Cash Impact</span><span>Proposal untuk ${NAMA}</span><span>Hal. ${pageNo}/${TOTAL}</span></div>` : ""}</section>`; };
+const pg = (cls, inner, foot = true) => { pageNo++; return `<section class="pg ${cls}">${inner}${foot ? `<div class="foot"><span>HrCash by Cash Impact</span><span>${NAMA ? "Proposal untuk " + NAMA : "Proposal Penawaran"}</span><span>Hal. ${pageNo}/${TOTAL}</span></div>` : ""}</section>`; };
 
 const menus = ["Kehadiran (Check In/Out)", "Papan Info", "Cuti", "Lembur", "Gaji dan slip", "Surat Peringatan", "Surat Keterangan", "Kegiatan Karyawan", "Penugasan", "Reimburse", "Jadwal Kerja", "Profil Saya"];
 const admin = ["Dashboard ringkasan kehadiran dan gaji bulanan", "Persetujuan absensi, cuti, dan lembur", "Rekap presensi bulanan per karyawan", "Penggajian dan slip gaji", "Laporan gaji per karyawan, organisasi, dan komponen", "Laporan pembayaran gaji dan rekap", "Laporan PPh 21 dan iuran BPJS per karyawan", "Kasbon, pinjaman, dan penyesuaian gaji", "Jadwal shift, pola mingguan, lokasi, hari libur", "Penilaian KPI dan reimburse", "Surat, pengumuman, dan tugas", "Log aktivitas"];
@@ -64,7 +64,7 @@ ${pg("cover", `${logo()}
   <h1>Proposal<br><em>Penawaran</em></h1>
   <div class="sub">Absensi selfie + lokasi, laporan gaji otomatis, dan Portal Karyawan untuk usaha Anda.</div>
   <div class="offer"><b>Rp349.000</b><span>sekali beli, bukan langganan</span></div>
-  <div class="meta"><div>Disiapkan untuk: <b>${NAMA}</b></div><div>Tanggal: <b>${TGL}</b></div><div>Kontak: <b>WhatsApp ${WA}</b></div></div>
+  ${NAMA ? `<div class="meta"><div>Disiapkan untuk: <b>${NAMA}</b></div><div>Tanggal: <b>${TGL}</b></div><div>Kontak: <b>WhatsApp ${WA}</b></div></div>` : ""}
   <div class="cphone"><img src="${img("shot-home.jpg")}"></div>`)}
 ${pg("", `${logo(false)}<h2>Tantangan yang sering <em>dihadapi pemilik usaha</em></h2>
   <div class="lead">Mengurus karyawan seharusnya tidak menyita waktu yang lebih berharga untuk mengembangkan usaha.</div>
@@ -116,7 +116,7 @@ ${pg("", `${logo(false)}<h2>Pertanyaan umum &amp; <em>langkah berikutnya</em></h
    <div class="q"><b>Bisa dipakai untuk usaha apa saja?</b><span>Cocok untuk warung, toko, bengkel, salon, kafe, laundry, klinik, dan usaha kecil lain yang memiliki karyawan.</span></div>
   </div>
   <div class="cta"><img src="${qr}"><div><h3>Mulai sekarang</h3><div class="wa">${ic.wa}${WA}</div><p>Scan kode QR atau chat WhatsApp. Sebutkan nama usaha dan jumlah karyawan Anda.</p></div></div>
-  <div class="note" style="margin-top:8mm">Penawaran berlaku 14 hari sejak ${TGL}. Harga dan ketentuan dapat berubah setelah masa berlaku. Terima kasih atas kesempatan yang diberikan.</div>`)}
+  <div class="note" style="margin-top:8mm">Harga dan ketentuan dapat berubah sewaktu-waktu. Konfirmasi harga terbaru melalui WhatsApp. Terima kasih atas kesempatan yang diberikan.</div>`)}
 </body></html>`;
 
 const browser = await chromium.launch({ executablePath: "/opt/pw-browsers/chromium" });
