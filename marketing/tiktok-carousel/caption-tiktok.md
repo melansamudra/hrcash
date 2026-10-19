@@ -1,6 +1,6 @@
 # Caption TikTok (carousel 8 gambar, mode foto)
 
-Urutan unggah: tiktok-proposal-1 sampai 8.
+Urutan unggah: tiktok-carousel-1 sampai 8.
 
 **Caption**
 > Pemilik usaha yang punya karyawan, baca ini. Absen selfie + lokasi, laporan gaji otomatis, tanpa install aplikasi. Rp349.000 sekali beli, bukan langganan. Bingung atau ada kendala? Kami bantu setup sampai bisa. Chat WA 0812-3455-6757. Coba demo di slide 7.
