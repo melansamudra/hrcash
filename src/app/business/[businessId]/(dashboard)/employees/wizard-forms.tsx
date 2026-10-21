@@ -140,10 +140,10 @@ export function Step1Form({
           <Field label="Nama Lengkap" required className="sm:col-span-2">
             <input name="name" className={inputClass} defaultValue={e?.name} placeholder="Nama Lengkap" />
           </Field>
-          <Field label="Tempat Lahir" required>
+          <Field label="Tempat Lahir">
             <input name="birth_place" className={inputClass} defaultValue={e?.birth_place ?? ""} placeholder="Tempat Lahir" />
           </Field>
-          <Field label="Tanggal Lahir" required>
+          <Field label="Tanggal Lahir">
             <input name="birth_date" type="date" className={inputClass} defaultValue={e?.birth_date ?? ""} />
           </Field>
           <Field label="Jenis Kelamin">
@@ -159,7 +159,7 @@ export function Step1Form({
               ))}
             </div>
           </Field>
-          <Field label="Status Perkawinan" required>
+          <Field label="Status Perkawinan">
             <select name="marital_status" className={inputClass} defaultValue={e?.marital_status ?? ""}>
               <option value="">Status Perkawinan</option>
               {MARITAL_STATUSES.map((o) => (
@@ -175,7 +175,7 @@ export function Step1Form({
               ))}
             </select>
           </Field>
-          <Field label="Agama" required>
+          <Field label="Agama">
             <select name="religion" className={inputClass} defaultValue={e?.religion ?? ""}>
               <option value="">Agama</option>
               {RELIGIONS.map((o) => (
@@ -183,7 +183,7 @@ export function Step1Form({
               ))}
             </select>
           </Field>
-          <Field label="Status Warga Negara" required>
+          <Field label="Status Warga Negara">
             <select
               name="citizenship"
               className={inputClass}
@@ -205,35 +205,35 @@ export function Step1Form({
       <div>
         <SectionTitle>Informasi Kontak</SectionTitle>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Tipe Kartu Identitas" required>
+          <Field label="Tipe Kartu Identitas">
             <select name="id_type" className={inputClass} defaultValue={e?.id_type ?? "KTP"}>
               {ID_TYPES.map((o) => (
                 <option key={o}>{o}</option>
               ))}
             </select>
           </Field>
-          <Field label="ID Kartu Identitas" required>
+          <Field label="ID Kartu Identitas">
             <input name="id_number" className={inputClass} defaultValue={e?.nik ?? e?.id_number ?? ""} placeholder="Nomor identitas" />
           </Field>
           <Field label="Nomor Kartu Keluarga">
             <input name="family_card_number" className={inputClass} defaultValue={e?.family_card_number ?? ""} />
           </Field>
-          <Field label="Email" required hint="Dipakai untuk notifikasi cuti.">
+          <Field label="Email" hint="Dipakai untuk notifikasi cuti.">
             <input name="email" type="email" className={inputClass} defaultValue={e?.email ?? ""} placeholder="nama@email.com" />
           </Field>
-          <Field label="Nomor Ponsel" required>
+          <Field label="Nomor Ponsel">
             <input name="phone" type="tel" className={inputClass} defaultValue={e?.phone ?? ""} placeholder="08xxxxxxxxxx" />
           </Field>
           <Field label="Nomor Telepon">
             <input name="phone_alt" type="tel" className={inputClass} defaultValue={e?.phone_alt ?? ""} />
           </Field>
-          <Field label="Alamat Kartu Identitas" required className="sm:col-span-2">
+          <Field label="Alamat Kartu Identitas" className="sm:col-span-2">
             <textarea name="id_address" rows={2} className={inputClass} defaultValue={e?.id_address ?? ""} placeholder="Alamat sesuai kartu identitas" />
           </Field>
-          <Field label="Negara" required>
+          <Field label="Negara">
             <input name="id_country" className={inputClass} defaultValue={e?.id_country ?? "Indonesia"} />
           </Field>
-          <Field label="Provinsi" required>
+          <Field label="Provinsi">
             <select name="id_province" className={inputClass} defaultValue={e?.id_province ?? ""}>
               <option value="">Provinsi</option>
               {PROVINCES.map((o) => (
@@ -241,7 +241,7 @@ export function Step1Form({
               ))}
             </select>
           </Field>
-          <Field label="Kota / Kabupaten" required className="sm:col-span-2">
+          <Field label="Kota / Kabupaten" className="sm:col-span-2">
             <input name="id_city" className={inputClass} defaultValue={e?.id_city ?? ""} placeholder="Kota / Kabupaten" />
           </Field>
 
@@ -258,13 +258,13 @@ export function Step1Form({
 
           {!domSame && (
             <>
-              <Field label="Alamat Domisili" required className="sm:col-span-2">
+              <Field label="Alamat Domisili" className="sm:col-span-2">
                 <textarea name="dom_address" rows={2} className={inputClass} defaultValue={e?.dom_address ?? ""} />
               </Field>
-              <Field label="Negara Domisili" required>
+              <Field label="Negara Domisili">
                 <input name="dom_country" className={inputClass} defaultValue={e?.dom_country ?? "Indonesia"} />
               </Field>
-              <Field label="Provinsi Domisili" required>
+              <Field label="Provinsi Domisili">
                 <select name="dom_province" className={inputClass} defaultValue={e?.dom_province ?? ""}>
                   <option value="">Provinsi Domisili</option>
                   {PROVINCES.map((o) => (
@@ -272,16 +272,16 @@ export function Step1Form({
                   ))}
                 </select>
               </Field>
-              <Field label="Kota Domisili" required className="sm:col-span-2">
+              <Field label="Kota Domisili" className="sm:col-span-2">
                 <input name="dom_city" className={inputClass} defaultValue={e?.dom_city ?? ""} />
               </Field>
             </>
           )}
 
-          <Field label="Nama Kontak Darurat" required>
+          <Field label="Nama Kontak Darurat">
             <input name="emergency_name" className={inputClass} defaultValue={e?.emergency_name ?? ""} />
           </Field>
-          <Field label="Telepon Darurat" required>
+          <Field label="Telepon Darurat">
             <input name="emergency_phone" type="tel" className={inputClass} defaultValue={e?.emergency_phone ?? ""} />
           </Field>
         </div>
@@ -427,7 +427,7 @@ export function Step2Form({
       <div>
         <SectionTitle>Kepegawaian</SectionTitle>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Status Karyawan" required>
+          <Field label="Status Karyawan">
             <select
               name="employment_status"
               className={inputClass}
@@ -441,7 +441,7 @@ export function Step2Form({
               ))}
             </select>
           </Field>
-          <Field label="Tanggal Bergabung" required>
+          <Field label="Tanggal Bergabung">
             <input
               name="join_date"
               type="date"
@@ -449,7 +449,7 @@ export function Step2Form({
               defaultValue={e.join_date ?? new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Jakarta" })}
             />
           </Field>
-          <Field label="Penempatan Kerja" required className="sm:col-span-2">
+          <Field label="Penempatan Kerja" className="sm:col-span-2">
             <select name="placement_type" className={inputClass} defaultValue={e.placement_type ?? "Baru Direkrut"}>
               {PLACEMENT_TYPES.map((o) => (
                 <option key={o}>{o}</option>
@@ -461,7 +461,6 @@ export function Step2Form({
             kind="organizations"
             label="Organisasi"
             noun="organisasi"
-            required
             name="organization_id"
             options={organizations}
             defaultValue={e.organization_id}
@@ -471,7 +470,6 @@ export function Step2Form({
             kind="positions"
             label="Jabatan"
             noun="jabatan"
-            required
             name="position_id"
             options={positions}
             defaultValue={e.position_id}
@@ -481,7 +479,6 @@ export function Step2Form({
             kind="ranks"
             label="Pangkat"
             noun="pangkat"
-            required
             name="rank_id"
             options={ranks}
             defaultValue={e.rank_id}
@@ -524,7 +521,7 @@ export function Step3Form({
       <div>
         <SectionTitle>Gaji &amp; Tunjangan</SectionTitle>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Tipe Gaji" required className="sm:col-span-2">
+          <Field label="Tipe Gaji" className="sm:col-span-2">
             <div className="grid max-w-xs grid-cols-2 gap-2">
               {(["bulanan", "harian"] as const).map((t) => (
                 <label

@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { missingEmployeeFields } from "@/lib/employee/completeness";
 import EmployeesClient, { type EmployeeRow } from "./employees-client";
 
 export default async function EmployeesPage({
@@ -12,7 +13,7 @@ export default async function EmployeesPage({
   const { data: employees } = await supabase
     .from("employees")
     .select(
-      "id, name, employee_code, salary_type, daily_rate, monthly_rate, active, note, email, phone, id_number, birth_date, gender, employment_status, npwp, setup_complete, contract_end, daily_meal_allowance, daily_attendance_allowance, lembur_rate_per_hour, ptkp_status, bpjs_kesehatan, bpjs_ketenagakerjaan, bpjs_wage_base, nik, join_date, bank_name, bank_account_number, bank_account_name, photo_path, attendance_pin_hash, organizations(name), positions(name), ranks(name)",
+      "id, name, employee_code, salary_type, daily_rate, monthly_rate, active, note, email, phone, id_number, birth_date, gender, employment_status, npwp, setup_complete, contract_end, daily_meal_allowance, daily_attendance_allowance, lembur_rate_per_hour, ptkp_status, bpjs_kesehatan, bpjs_ketenagakerjaan, bpjs_wage_base, nik, join_date, bank_name, bank_account_number, bank_account_name, photo_path, attendance_pin_hash, organizations(name), positions(name), ranks(name), birth_place, marital_status, religion, id_address, id_province, id_city, emergency_name, emergency_phone, organization_id, position_id, rank_id",
     )
     .eq("business_id", businessId)
     .is("deleted_at", null)
@@ -28,7 +29,8 @@ export default async function EmployeesPage({
 
   // Hash PIN tidak pernah dikirim ke browser — cukup flag ada/tidaknya.
   const rows: EmployeeRow[] = (employees ?? []).map(({ attendance_pin_hash, photo_path, ...e }) => ({
-    ...(e as Omit<EmployeeRow, "has_pin" | "photo_url">),
+    ...(e as Omit<EmployeeRow, "has_pin" | "photo_url" | "missing">),
+    missing: missingEmployeeFields(e),
     has_pin: attendance_pin_hash !== null,
     photo_url: photo_path ? (signed.get(photo_path) ?? null) : null,
   }));

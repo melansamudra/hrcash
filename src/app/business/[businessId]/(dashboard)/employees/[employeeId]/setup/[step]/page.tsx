@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { Tables } from "@/lib/types/database";
 import { Card, PageHeader } from "@/components/form-ui";
+import { missingEmployeeFields } from "@/lib/employee/completeness";
 import { saveStep1, saveStep2, saveStep3 } from "../../../wizard-actions";
 import { Step1Form, Step2Form, Step3Form, Stepper } from "../../../wizard-forms";
 
@@ -28,6 +29,7 @@ export default async function EmployeeSetupPage({
   const { attendance_pin_hash, ...rest } = row;
   const employee: Tables<"employees"> = { ...rest, attendance_pin_hash: attendance_pin_hash ? "set" : null };
 
+  const missing = missingEmployeeFields(employee);
   const base = `/business/${businessId}/employees`;
   const detailHref = `${base}/${employeeId}`;
   const prev = n === 1 ? (employee.setup_complete ? detailHref : base) : `${base}/${employeeId}/setup/${n - 1}`;
@@ -38,7 +40,11 @@ export default async function EmployeeSetupPage({
     <div className="mx-auto max-w-4xl">
       <PageHeader
         title={employee.setup_complete ? `Ubah Data — ${employee.name}` : "Tambah Karyawan"}
-        subtitle={employee.setup_complete ? undefined : `${employee.name} · belum lengkap`}
+        subtitle={
+          missing.length > 0
+            ? `${employee.name} · belum lengkap: ${missing.join(", ")}. Semua isian opsional, boleh dilengkapi nanti.`
+            : undefined
+        }
       />
       <Card className="mb-4">
         <Stepper current={n} basePath={base} employeeId={employeeId} />

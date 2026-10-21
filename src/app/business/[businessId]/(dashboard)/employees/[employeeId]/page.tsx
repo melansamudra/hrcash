@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { missingEmployeeFields } from "@/lib/employee/completeness";
 import { notFound } from "next/navigation";
 import { Pencil } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
@@ -99,6 +100,8 @@ export default async function EmployeeDetailPage({
     ? "Sama dengan alamat kartu identitas"
     : [e.dom_address, e.dom_city, e.dom_province].filter(Boolean).join(", ");
 
+  const missing = missingEmployeeFields(e);
+
   return (
     <div className="w-full">
       <PageHeader
@@ -147,6 +150,9 @@ export default async function EmployeeDetailPage({
               </span>
             )}
           </div>
+          {!e.setup_complete && missing.length > 0 && (
+            <p className="mt-3 text-xs leading-snug text-amber-700">Belum diisi: {missing.join(", ")}.</p>
+          )}
         </Card>
 
         <div>

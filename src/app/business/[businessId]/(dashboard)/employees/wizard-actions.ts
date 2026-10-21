@@ -8,6 +8,7 @@ import { nextEmployeeCode } from "@/lib/employee/code";
 import { recordCareerChange, recordSalaryChange } from "@/lib/employee/history";
 import { hashPin, PIN_PATTERN } from "@/lib/attendance/pin";
 import { identityDbError, parseIdentity } from "@/lib/employees/identity";
+import { COMPLETENESS_COLUMNS, missingEmployeeFields } from "@/lib/employee/completeness";
 import { CONTRACT_STATUSES, EMPLOYMENT_STATUSES, PTKP_OPTIONS } from "@/lib/employee/constants";
 
 export type WizardState = { error: string | null };
@@ -27,6 +28,26 @@ function toIsoDate(value: string): string | null {
   return m ? `${m[3]}-${m[2]}-${m[1]}` : null;
 }
 
+/** Tandai lengkap/belum dari isi data karyawan saat ini (tidak ada isian wajib). */
+async function refreshSetupComplete(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  businessId: string,
+  employeeId: string,
+) {
+  const { data } = await supabase
+    .from("employees")
+    .select(COMPLETENESS_COLUMNS)
+    .eq("id", employeeId)
+    .eq("business_id", businessId)
+    .maybeSingle();
+  if (!data) return;
+  await supabase
+    .from("employees")
+    .update({ setup_complete: missingEmployeeFields(data).length === 0 })
+    .eq("id", employeeId)
+    .eq("business_id", businessId);
+}
+
 /** Langkah 1 — Personal. Tanpa employeeId = buat karyawan baru (draft belum lengkap). */
 export async function saveStep1(
   businessId: string,
@@ -38,64 +59,45 @@ export async function saveStep1(
 
   const name = str(fd, "name");
   const domicileSame = fd.get("domicile_same") === "on";
-  const required: [string, string][] = [
-    ["name", "Nama lengkap"],
-    ["birth_place", "Tempat lahir"],
-    ["birth_date", "Tanggal lahir"],
-    ["marital_status", "Status perkawinan"],
-    ["religion", "Agama"],
-    ["id_number", "ID kartu identitas"],
-    ["email", "Email"],
-    ["phone", "Nomor ponsel"],
-    ["id_address", "Alamat kartu identitas"],
-    ["id_province", "Provinsi"],
-    ["id_city", "Kota"],
-    ["emergency_name", "Nama kontak darurat"],
-    ["emergency_phone", "Telepon darurat"],
-  ];
-  if (!domicileSame) {
-    required.push(["dom_address", "Alamat domisili"], ["dom_province", "Provinsi domisili"], ["dom_city", "Kota domisili"]);
-  }
-  for (const [key, label] of required) {
-    if (!str(fd, key)) return { error: `${label} wajib diisi.` };
-  }
-  const birthDate = toIsoDate(str(fd, "birth_date"));
-  if (!birthDate) return { error: "Tanggal lahir tidak valid." };
+  if (!name) return { error: "Nama lengkap wajib diisi." };
+  const birthRaw = str(fd, "birth_date");
+  const birthDate = birthRaw ? toIsoDate(birthRaw) : null;
+  if (birthRaw && !birthDate) return { error: "Tanggal lahir tidak valid." };
 
   // KTP disimpan di kolom `nik` (16 digit, unik per bisnis — dipakai Portal Karyawan);
   // jenis identitas lain disimpan di `id_number`.
   const idType = str(fd, "id_type") || "KTP";
   const idRaw = str(fd, "id_number").replace(/[\s.-]/g, "");
-  if (idType === "KTP" && !/^\d{16}$/.test(idRaw)) return { error: "NIK (KTP) harus 16 digit angka." };
+  if (idType === "KTP" && idRaw && !/^\d{16}$/.test(idRaw)) return { error: "NIK (KTP) harus 16 digit angka." };
 
   const payload = {
     name,
-    birth_place: str(fd, "birth_place"),
+    birth_place: strOrNull(fd, "birth_place"),
     birth_date: birthDate,
     gender: str(fd, "gender") === "P" ? "P" : "L",
-    marital_status: str(fd, "marital_status"),
+    marital_status: strOrNull(fd, "marital_status"),
     blood_type: strOrNull(fd, "blood_type"),
-    religion: str(fd, "religion"),
+    religion: strOrNull(fd, "religion"),
     citizenship: str(fd, "citizenship") === "WNA" ? "WNA" : "WNI",
     citizenship_country: strOrNull(fd, "citizenship_country"),
     id_type: idType,
-    nik: idType === "KTP" ? idRaw : null,
-    id_number: idType === "KTP" ? null : idRaw,
+    nik: idType === "KTP" ? idRaw || null : null,
+    id_number: idType === "KTP" ? null : idRaw || null,
     family_card_number: strOrNull(fd, "family_card_number"),
-    email: str(fd, "email"),
-    phone: str(fd, "phone"),
+    email: strOrNull(fd, "email"),
+    phone: strOrNull(fd, "phone"),
     phone_alt: strOrNull(fd, "phone_alt"),
-    id_address: str(fd, "id_address"),
+    id_address: strOrNull(fd, "id_address"),
     id_country: str(fd, "id_country") || "Indonesia",
-    id_province: str(fd, "id_province"),
-    id_city: str(fd, "id_city"),
+    id_province: strOrNull(fd, "id_province"),
+    id_city: strOrNull(fd, "id_city"),
     domicile_same: domicileSame,
-    dom_address: domicileSame ? str(fd, "id_address") : str(fd, "dom_address"),
+    dom_address: domicileSame ? strOrNull(fd, "id_address") : strOrNull(fd, "dom_address"),
     dom_country: domicileSame ? str(fd, "id_country") || "Indonesia" : str(fd, "dom_country") || "Indonesia",
-    dom_province: domicileSame ? str(fd, "id_province") : str(fd, "dom_province"),
-    dom_city: domicileSame ? str(fd, "id_city") : str(fd, "dom_city"),
-    emergency_name: str(fd, "emergency_name"),
-    emergency_phone: str(fd, "emergency_phone"),
+    dom_province: domicileSame ? strOrNull(fd, "id_province") : strOrNull(fd, "dom_province"),
+    dom_city: domicileSame ? strOrNull(fd, "id_city") : strOrNull(fd, "dom_city"),
+    emergency_name: strOrNull(fd, "emergency_name"),
+    emergency_phone: strOrNull(fd, "emergency_phone"),
     edu_level: strOrNull(fd, "edu_level"),
     edu_institution: strOrNull(fd, "edu_institution"),
     edu_major: strOrNull(fd, "edu_major"),
@@ -132,6 +134,7 @@ export async function saveStep1(
     await logActivity(supabase, businessId, "Karyawan ditambahkan", name);
   }
 
+  if (id) await refreshSetupComplete(supabase, businessId, id);
   revalidatePath(`/business/${businessId}/employees`);
   redirect(`/business/${businessId}/employees/${id}/setup/2`);
 }
@@ -145,27 +148,21 @@ export async function saveStep2(
 ): Promise<WizardState> {
   const supabase = await createClient();
 
-  const status = str(fd, "employment_status");
-  if (!EMPLOYMENT_STATUSES.some((s) => s.value === status)) return { error: "Status karyawan wajib dipilih." };
-  const joinDate = toIsoDate(str(fd, "join_date"));
-  if (!joinDate) return { error: "Tanggal bergabung wajib diisi." };
-  for (const [key, label] of [
-    ["placement_type", "Penempatan kerja"],
-    ["organization_id", "Organisasi"],
-    ["position_id", "Jabatan"],
-    ["rank_id", "Pangkat"],
-  ] as const) {
-    if (!str(fd, key)) return { error: `${label} wajib dipilih.` };
-  }
+  const statusRaw = str(fd, "employment_status");
+  const status = EMPLOYMENT_STATUSES.some((s) => s.value === statusRaw) ? statusRaw : "tetap";
+  const joinRaw = str(fd, "join_date");
+  const joinDate = joinRaw ? toIsoDate(joinRaw) : null;
+  if (joinRaw && !joinDate) return { error: "Tanggal bergabung tidak valid." };
+  const placementType = strOrNull(fd, "placement_type");
+  const organizationId = strOrNull(fd, "organization_id");
+  const positionId = strOrNull(fd, "position_id");
+  const rankId = strOrNull(fd, "rank_id");
   const needsEnd = CONTRACT_STATUSES.includes(status);
   const contractEnd = needsEnd ? toIsoDate(str(fd, "contract_end")) : null;
 
-  const { data: position } = await supabase
-    .from("positions")
-    .select("name")
-    .eq("id", str(fd, "position_id"))
-    .eq("business_id", businessId)
-    .maybeSingle();
+  const { data: position } = positionId
+    ? await supabase.from("positions").select("name").eq("id", positionId).eq("business_id", businessId).maybeSingle()
+    : { data: null };
 
   const { data: beforeCareer } = await supabase
     .from("employees")
@@ -179,10 +176,10 @@ export async function saveStep2(
     .update({
       employment_status: status,
       join_date: joinDate,
-      placement_type: str(fd, "placement_type"),
-      organization_id: str(fd, "organization_id"),
-      position_id: str(fd, "position_id"),
-      rank_id: str(fd, "rank_id"),
+      placement_type: placementType,
+      organization_id: organizationId,
+      position_id: positionId,
+      rank_id: rankId,
       grade: strOrNull(fd, "grade"),
       contract_end: contractEnd,
       // `note` dipakai UI portal absen sebagai label jabatan — selaraskan.
@@ -200,14 +197,15 @@ export async function saveStep2(
     beforeCareer ?? null,
     {
       employment_status: status,
-      placement_type: str(fd, "placement_type"),
-      organization_id: str(fd, "organization_id"),
-      position_id: str(fd, "position_id"),
-      rank_id: str(fd, "rank_id"),
+      placement_type: placementType,
+      organization_id: organizationId,
+      position_id: positionId,
+      rank_id: rankId,
     },
     beforeCareer?.organization_id ? null : joinDate,
   );
 
+  await refreshSetupComplete(supabase, businessId, employeeId);
   revalidatePath(`/business/${businessId}/employees`);
   redirect(`/business/${businessId}/employees/${employeeId}/setup/3`);
 }
@@ -270,7 +268,6 @@ export async function saveStep3(
       bpjs_kes_number: strOrNull(fd, "bpjs_kes_number"),
       bpjs_kes_effective: toIsoDate(str(fd, "bpjs_kes_effective")),
       bpjs_family_count: str(fd, "bpjs_family_count") ? Math.max(0, Math.round(num(fd, "bpjs_family_count"))) : null,
-      setup_complete: true,
     })
     .eq("id", employeeId)
     .eq("business_id", businessId);
@@ -291,6 +288,7 @@ export async function saveStep3(
     null,
   );
 
+  await refreshSetupComplete(supabase, businessId, employeeId);
   revalidatePath(`/business/${businessId}/employees`);
   redirect(`/business/${businessId}/employees/${employeeId}`);
 }
