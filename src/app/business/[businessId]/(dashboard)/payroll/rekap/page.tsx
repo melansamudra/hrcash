@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { loadAttendanceSummary, loadPayrollSettings } from "@/lib/payroll/aggregate";
 import { calcPayslip, type EmployeePayrollInput } from "@/lib/payroll/calc";
@@ -19,6 +20,14 @@ function currentMonthRange() {
   return { start, end };
 }
 
+const MONTH_NAMES = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+function monthRange(ym: string) {
+  const [y, m] = ym.split("-").map(Number);
+  const last = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  return { start: `${ym}-01`, end: `${ym}-${String(last).padStart(2, "0")}` };
+}
+
 export default async function PayrollRekapPage({
   params,
   searchParams,
@@ -31,6 +40,10 @@ export default async function PayrollRekapPage({
   const defaultRange = currentMonthRange();
   const periodStart = startParam || defaultRange.start;
   const periodEnd = endParam || defaultRange.end;
+
+  const rekapBase = `/business/${businessId}/payroll/rekap`;
+  const stripYear = Number(periodStart.slice(0, 4)) || new Date().getFullYear();
+  const thisMonthYm = defaultRange.start.slice(0, 7);
 
   const supabase = await createClient();
 
@@ -143,6 +156,42 @@ export default async function PayrollRekapPage({
         <p className="mt-0.5 text-sm text-zinc-500">
           Pratinjau gaji per karyawan untuk periode terpilih, lalu buat slip.
         </p>
+      </div>
+
+      <div className="mb-3 rounded-xl border border-zinc-100 bg-white p-3 shadow-sm">
+        <div className="mb-2 flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <Link href={`${rekapBase}?${new URLSearchParams(monthRange(`${stripYear - 1}-${periodStart.slice(5, 7)}`))}`} className="rounded-lg border border-zinc-200 px-2.5 py-1 text-xs hover:bg-zinc-50" aria-label="Tahun sebelumnya">
+              ←
+            </Link>
+            <span className="min-w-14 text-center text-[14px] font-semibold text-zinc-800">{stripYear}</span>
+            <Link href={`${rekapBase}?${new URLSearchParams(monthRange(`${stripYear + 1}-${periodStart.slice(5, 7)}`))}`} className="rounded-lg border border-zinc-200 px-2.5 py-1 text-xs hover:bg-zinc-50" aria-label="Tahun berikutnya">
+              →
+            </Link>
+          </div>
+          <Link href={rekapBase} className="text-xs font-semibold text-brand-700 hover:underline">
+            Bulan Ini
+          </Link>
+        </div>
+        <div className="flex gap-1.5 overflow-x-auto pb-1">
+          {MONTH_NAMES.map((name, i) => {
+            const ym = `${stripYear}-${String(i + 1).padStart(2, "0")}`;
+            const range = monthRange(ym);
+            const active = range.start === periodStart && range.end === periodEnd;
+            return (
+              <Link
+                key={ym}
+                href={`${rekapBase}?${new URLSearchParams(range)}`}
+                className={`flex w-24 shrink-0 flex-col items-center rounded-xl py-2 text-center transition-colors ${
+                  active ? "bg-brand-600 text-white" : ym === thisMonthYm ? "bg-brand-100 text-brand-800" : "bg-zinc-50 text-zinc-600 hover:bg-zinc-100"
+                }`}
+              >
+                <span className="text-[14px] font-semibold">{name}</span>
+                <span className="text-[11px] opacity-75">{stripYear}</span>
+              </Link>
+            );
+          })}
+        </div>
       </div>
 
       <form className="mb-5 flex flex-wrap items-end gap-3 rounded-xl border border-zinc-100 bg-white p-4 shadow-sm">
