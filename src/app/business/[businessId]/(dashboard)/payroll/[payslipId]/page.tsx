@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getOutstandingKasbon } from "@/lib/payroll/kasbon";
@@ -63,6 +65,12 @@ export default async function PayslipDetailPage({
   return (
     <div>
       <div className="print:hidden">
+      <Link
+        href={`/business/${businessId}/payroll`}
+        className="mb-3 inline-flex items-center gap-1 text-sm font-medium text-zinc-500 hover:text-zinc-900"
+      >
+        <ChevronLeft size={16} /> Kembali ke Payroll
+      </Link>
       <div className="mb-6 flex items-start justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">

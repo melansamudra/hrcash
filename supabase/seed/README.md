@@ -9,6 +9,9 @@
 4. Login dengan akun demo → bisnis "Toko Demo Maju Jaya".
 5. **Buat slip gaji**: ini sengaja **tidak** diseed lewat SQL (supaya perhitungannya dijamin akurat, dihitung oleh aplikasi sendiri, bukan ditulis ulang manual di SQL). Buka menu **Payroll**, pilih periode bulan lalu di pemilih bulan, klik tombol **"Generate Payroll"** — slip untuk semua 10 karyawan langsung dibuat sekali klik.
 
+## Tambahan: Agustus & September 2026
+`demo-agustus-september.sql` mengisi jadwal shift dan absensi 1 Agustus–30 September 2026 untuk semua karyawan aktif bisnis demo. Jalankan sekali di SQL Editor (aman diulang, data yang sudah ada tidak ditimpa). Slip gaji tidak dibuat di sini; gunakan **Generate Payroll** per bulan.
+
 ## Karyawan & PIN
 | Karyawan | Jabatan | Gaji | PTKP | PIN |
 |---|---|---|---|---|
