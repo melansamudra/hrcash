@@ -138,6 +138,24 @@ export default function LoginPage() {
           Daftar sekarang
         </Link>
       </p>
+
+      <div className="mt-6 border-t border-zinc-100 pt-5">
+        <p className="mb-3 text-center text-xs text-zinc-500">Ingin lihat dulu sebelum daftar?</p>
+        <div className="grid grid-cols-2 gap-2">
+          <a
+            href="/demo"
+            className="rounded-xl border border-brand-600 px-3 py-2.5 text-center text-xs font-semibold text-brand-600 transition-colors hover:bg-brand-50"
+          >
+            Demo Dashboard
+          </a>
+          <a
+            href="/demo-portal"
+            className="rounded-xl border border-zinc-200 px-3 py-2.5 text-center text-xs font-semibold text-zinc-700 transition-colors hover:bg-zinc-50"
+          >
+            Demo Portal Karyawan
+          </a>
+        </div>
+      </div>
     </AuthShell>
   );
 }
