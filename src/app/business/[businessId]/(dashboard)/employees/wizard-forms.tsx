@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useState } from "react";
+import { useActionState, useState, useTransition, type FormEvent } from "react";
 import { Check, Plus } from "lucide-react";
 import type { Tables } from "@/lib/types/database";
 import { Card, Field, SectionTitle, btnOutline, btnPrimary, inputClass } from "@/components/form-ui";
@@ -113,6 +113,20 @@ function FormFooter({
 }
 
 // ── Langkah 1: Personal ──────────────────────────────────────────────────
+// Form action bawaan React 19 MENGOSONGKAN semua isian setelah submit, termasuk
+// saat ada pesan error — data yang sudah diketik jadi hilang. Di sini action
+// dipanggil manual supaya isian tetap ada kalau simpan gagal.
+function useKeepValuesAction(action: Action) {
+  const [state, formAction, actionPending] = useActionState(action, initial);
+  const [transitionPending, startTransition] = useTransition();
+  function onSubmit(ev: FormEvent<HTMLFormElement>) {
+    ev.preventDefault();
+    const fd = new FormData(ev.currentTarget);
+    startTransition(() => formAction(fd));
+  }
+  return { state, onSubmit, pending: actionPending || transitionPending };
+}
+
 export function Step1Form({
   action,
   employee,
@@ -124,13 +138,13 @@ export function Step1Form({
   backHref: string;
   skipHref?: string;
 }) {
-  const [state, formAction, pending] = useActionState(action, initial);
+  const { state, onSubmit, pending } = useKeepValuesAction(action);
   const [citizenship, setCitizenship] = useState(employee?.citizenship ?? "WNI");
   const [domSame, setDomSame] = useState(employee?.domicile_same ?? true);
   const e = employee;
 
   return (
-    <form action={formAction} className="space-y-6">
+    <form onSubmit={onSubmit} className="space-y-6">
       <div>
         <SectionTitle>Informasi Pribadi</SectionTitle>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -418,12 +432,12 @@ export function Step2Form({
   backHref: string;
   skipHref?: string;
 }) {
-  const [state, formAction, pending] = useActionState(action, initial);
+  const { state, onSubmit, pending } = useKeepValuesAction(action);
   const [status, setStatus] = useState(employee.employment_status ?? "tetap");
   const e = employee;
 
   return (
-    <form action={formAction} className="space-y-6">
+    <form onSubmit={onSubmit} className="space-y-6">
       <div>
         <SectionTitle>Kepegawaian</SectionTitle>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -510,14 +524,14 @@ export function Step3Form({
   employee: Employee;
   backHref: string;
 }) {
-  const [state, formAction, pending] = useActionState(action, initial);
+  const { state, onSubmit, pending } = useKeepValuesAction(action);
   const [salaryType, setSalaryType] = useState<"harian" | "bulanan">(
     employee.salary_type === "harian" ? "harian" : "bulanan",
   );
   const e = employee;
 
   return (
-    <form action={formAction} className="space-y-6">
+    <form onSubmit={onSubmit} className="space-y-6">
       <div>
         <SectionTitle>Gaji &amp; Tunjangan</SectionTitle>
         <div className="grid gap-4 sm:grid-cols-2">
