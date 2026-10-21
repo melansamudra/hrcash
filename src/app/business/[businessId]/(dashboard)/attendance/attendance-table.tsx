@@ -1,9 +1,9 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { Download, ImageIcon } from "lucide-react";
 import { btnOutline } from "@/components/form-ui";
-import { setAttendanceLate, setAttendanceStatus, setAttendanceVerified, type AttendanceStatus } from "./actions";
+import { setAttendanceLate, setAttendanceStatus, setAttendanceTimes, setAttendanceVerified, type AttendanceStatus } from "./actions";
 
 export type AttendanceRowData = {
   employeeId: string;
@@ -37,6 +37,15 @@ function fmtTime(iso: string | null) {
   if (!iso) return "—";
   return new Date(iso).toLocaleTimeString("id-ID", { timeZone: "Asia/Jakarta", hour: "2-digit", minute: "2-digit" });
 }
+
+// "HH:MM" WIB untuk <input type="time">; kosong kalau belum ada.
+function toTimeInput(iso: string | null) {
+  if (!iso) return "";
+  return new Date(iso).toLocaleTimeString("en-GB", { timeZone: "Asia/Jakarta", hour: "2-digit", minute: "2-digit", hour12: false });
+}
+
+const timeInputClass =
+  "w-[92px] rounded-lg border border-zinc-200 px-2 py-1 text-xs text-zinc-700 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-100 disabled:opacity-60";
 
 function csvCell(v: string | number) {
   const s = String(v);
@@ -83,6 +92,16 @@ export function ExportButton({ date, rows }: { date: string; rows: AttendanceRow
 function Row({ businessId, date, index, row }: { businessId: string; date: string; index: number; row: AttendanceRowData }) {
   const [pending, startTransition] = useTransition();
   const meta = row.status ? STATUS_META[row.status] : null;
+  const [timeError, setTimeError] = useState<string | null>(null);
+
+  function saveTimes(checkIn: string, checkOut: string) {
+    if (checkIn === toTimeInput(row.checkInAt) && checkOut === toTimeInput(row.checkOutAt)) return;
+    setTimeError(null);
+    startTransition(async () => {
+      const res = await setAttendanceTimes(businessId, row.employeeId, date, checkIn, checkOut);
+      if (res.error) setTimeError(res.error);
+    });
+  }
 
   return (
     <tr className={`hover:bg-zinc-50/60 ${pending ? "opacity-60" : ""}`}>
@@ -112,8 +131,29 @@ function Row({ businessId, date, index, row }: { businessId: string; date: strin
           ))}
         </select>
       </td>
-      <td className="px-3 py-3 text-zinc-700">{fmtTime(row.checkInAt)}</td>
-      <td className="px-3 py-3 text-zinc-700">{fmtTime(row.checkOutAt)}</td>
+      <td className="px-3 py-3 align-top">
+        <input
+          key={`in-${row.checkInAt ?? ""}`}
+          type="time"
+          defaultValue={toTimeInput(row.checkInAt)}
+          disabled={pending}
+          aria-label={`Jam masuk ${row.employeeName}`}
+          onBlur={(e) => saveTimes(e.target.value, toTimeInput(row.checkOutAt))}
+          className={timeInputClass}
+        />
+      </td>
+      <td className="px-3 py-3 align-top">
+        <input
+          key={`out-${row.checkOutAt ?? ""}`}
+          type="time"
+          defaultValue={toTimeInput(row.checkOutAt)}
+          disabled={pending}
+          aria-label={`Jam keluar ${row.employeeName}`}
+          onBlur={(e) => saveTimes(toTimeInput(row.checkInAt), e.target.value)}
+          className={timeInputClass}
+        />
+        {timeError && <p className="mt-1 max-w-[140px] text-[11px] leading-snug text-red-600">{timeError}</p>}
+      </td>
       <td className="px-3 py-3">
         {row.late && row.lateMinutes > 0 ? (
           <>
