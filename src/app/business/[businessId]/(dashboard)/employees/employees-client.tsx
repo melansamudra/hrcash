@@ -53,6 +53,7 @@ export type EmployeeRow = {
   contract_end: string | null;
   npwp: string | null;
   setup_complete: boolean;
+  missing: string[];
   ptkp_status: string;
   organizations: { name: string } | null;
   positions: { name: string } | null;
@@ -451,7 +452,10 @@ export default function EmployeesClient({
                       <span>
                         <span className="font-medium text-brand-700 hover:underline">{e.name}</span>
                         {!e.setup_complete && (
-                          <span className="ml-2 rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-semibold text-amber-700">
+                          <span
+                            title={e.missing.length > 0 ? `Belum diisi: ${e.missing.join(", ")}` : undefined}
+                            className="ml-2 rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-semibold text-amber-700"
+                          >
                             Belum lengkap
                           </span>
                         )}
