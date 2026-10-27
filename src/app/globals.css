@@ -1,20 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafc;
+  --background: #f4f8fc;
   --foreground: #0f172a;
 
-  /* Backoffice mengikuti warna Portal Karyawan: putih bersih + biru baja lembut. */
-  --color-brand-50: #f1f7fd;
-  --color-brand-100: #e3effc;
-  --color-brand-200: #c4d8ee;
-  --color-brand-300: #8db9e3;
-  --color-brand-400: #6aa0d0;
-  --color-brand-500: #4f80ad;
-  --color-brand-600: #3b6a97;
-  --color-brand-700: #2b5a85;
-  --color-brand-800: #1f4a73;
-  --color-brand-900: #17436a;
+  /* Backoffice mengikuti gaya Poscash: biru cerah, putih bersih. */
+  --color-brand-50: #eff7ff;
+  --color-brand-100: #dbeefe;
+  --color-brand-200: #bfe0fd;
+  --color-brand-300: #8ecbfb;
+  --color-brand-400: #4eaaf5;
+  --color-brand-500: #2b95ec;
+  --color-brand-600: #1583e0;
+  --color-brand-700: #1168b8;
+  --color-brand-800: #0f5295;
+  --color-brand-900: #0d4478;
 
   /* Palet biru khusus Portal Karyawan (header gradasi, kartu menu). */
   --color-portal-50: #eef4fc;

@@ -36,7 +36,7 @@ export function SectionTitle({ children }: { children: ReactNode }) {
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <div className={`rounded-2xl border border-zinc-100 bg-white p-5 shadow-sm sm:p-6 ${className}`}>
+    <div className={`rounded-2xl border border-zinc-100 bg-white p-5 shadow-[0_1px_3px_rgba(15,82,149,0.06)] sm:p-6 ${className}`}>
       {children}
     </div>
   );
@@ -54,7 +54,7 @@ export function PageHeader({
   return (
     <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">{title}</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-zinc-900">{title}</h1>
         {subtitle && <p className="mt-0.5 text-sm text-zinc-500">{subtitle}</p>}
       </div>
       {actions && <div className="flex flex-wrap items-center gap-2 print:hidden">{actions}</div>}

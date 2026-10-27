@@ -173,8 +173,8 @@ export default function DashboardShell({
                 key={entry.key}
                 href={href(entry.key)}
                 title={compact ? entry.label : undefined}
-                className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
-                  active ? "bg-brand-50 font-semibold text-brand-700" : "text-zinc-600 hover:bg-zinc-50"
+                className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] transition-colors ${
+                  active ? "bg-brand-100 font-semibold text-brand-700" : "text-zinc-600 hover:bg-zinc-50"
                 } ${compact ? "justify-center" : ""}`}
               >
                 <entry.icon className="h-[18px] w-[18px] shrink-0" strokeWidth={active ? 2.3 : 1.9} aria-hidden="true" />
@@ -191,8 +191,8 @@ export default function DashboardShell({
                 type="button"
                 title={compact ? entry.group : undefined}
                 onClick={() => (compact ? (toggleCollapsed(), setOpenGroups((s) => ({ ...s, [entry.group]: true }))) : setOpenGroups((s) => ({ ...s, [entry.group]: !open })))}
-                className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
-                  active && !open ? "bg-brand-50 font-semibold text-brand-700" : "text-zinc-600 hover:bg-zinc-50"
+                className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] transition-colors ${
+                  active && !open ? "bg-brand-100 font-semibold text-brand-700" : "text-zinc-600 hover:bg-zinc-50"
                 } ${compact ? "justify-center" : ""}`}
               >
                 <entry.icon className="h-[18px] w-[18px] shrink-0" strokeWidth={active ? 2.3 : 1.9} aria-hidden="true" />
@@ -213,7 +213,7 @@ export default function DashboardShell({
                         key={item.key}
                         href={href(item.key)}
                         className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
-                          itemActive ? "bg-brand-50 font-semibold text-brand-700" : "text-zinc-600 hover:bg-zinc-50"
+                          itemActive ? "bg-brand-100 font-semibold text-brand-700" : "text-zinc-600 hover:bg-zinc-50"
                         }`}
                       >
                         <item.icon className="h-4 w-4 shrink-0" strokeWidth={itemActive ? 2.3 : 1.9} aria-hidden="true" />
@@ -239,9 +239,9 @@ export default function DashboardShell({
   );
 
   return (
-    <div className="admin-scale flex h-screen overflow-hidden bg-zinc-50">
+    <div className="admin-scale flex h-screen overflow-hidden bg-[#f4f8fc]">
       {/* Sidebar desktop */}
-      <aside className={`hidden shrink-0 flex-col border-r border-zinc-200 bg-white transition-[width] md:flex print:hidden ${collapsed ? "w-[72px]" : "w-64"}`}>
+      <aside className={`hidden shrink-0 flex-col border-r border-zinc-100 bg-white transition-[width] md:flex print:hidden ${collapsed ? "w-[72px]" : "w-64"}`}>
         <div className={`flex h-16 items-center border-b border-zinc-100 ${collapsed ? "justify-center px-2" : "px-5"}`}>
           {collapsed ? (
             <Link href={base} className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-sm font-extrabold text-white" aria-label="Beranda">
@@ -280,12 +280,12 @@ export default function DashboardShell({
 
       <div className="flex h-screen min-w-0 flex-1 flex-col">
         {/* Top bar */}
-        <header ref={topbarRef} className="relative z-30 flex h-16 shrink-0 items-center justify-between gap-3 border-b border-zinc-200 bg-white px-4 text-zinc-700 sm:px-6 print:hidden">
+        <header ref={topbarRef} className="relative z-30 flex h-16 shrink-0 items-center justify-between gap-3 bg-brand-600 px-4 text-white sm:px-6 print:hidden">
           <div className="flex min-w-0 items-center gap-3">
-            <button type="button" aria-label="Buka menu" onClick={() => setDrawer(true)} className="rounded-lg p-1.5 hover:bg-zinc-100 md:hidden">
+            <button type="button" aria-label="Buka menu" onClick={() => setDrawer(true)} className="rounded-lg p-1.5 hover:bg-white/15 md:hidden">
               <Menu className="h-6 w-6" aria-hidden="true" />
             </button>
-            <Building2 className="hidden h-5 w-5 shrink-0 text-brand-500 sm:block" aria-hidden="true" />
+            <Building2 className="hidden h-5 w-5 shrink-0 text-white/80 sm:block" aria-hidden="true" />
             {businesses.length > 1 ? (
               <div className="relative min-w-0">
                 <button
@@ -293,10 +293,10 @@ export default function DashboardShell({
                   aria-label="Pindah bisnis"
                   aria-expanded={menu === "biz"}
                   onClick={() => setMenu(menu === "biz" ? null : "biz")}
-                  className="flex min-w-0 items-center gap-1 rounded-lg px-2 py-1.5 hover:bg-zinc-100"
+                  className="flex min-w-0 items-center gap-1 rounded-lg px-2 py-1.5 hover:bg-white/15"
                 >
-                  <span className="truncate text-sm font-bold tracking-wide text-zinc-800">{businessName}</span>
-                  <ChevronDown className="h-4 w-4 shrink-0 text-zinc-500" aria-hidden="true" />
+                  <span className="truncate text-sm font-bold tracking-wide text-white">{businessName}</span>
+                  <ChevronDown className="h-4 w-4 shrink-0 text-white/80" aria-hidden="true" />
                 </button>
                 {menu === "biz" && (
                   <div className="absolute left-0 top-11 z-40 max-h-80 w-72 overflow-y-auto rounded-2xl bg-white text-zinc-800 shadow-xl ring-1 ring-zinc-200">
@@ -317,7 +317,7 @@ export default function DashboardShell({
                 )}
               </div>
             ) : (
-              <span className="truncate text-sm font-bold tracking-wide text-zinc-800">{businessName}</span>
+              <span className="truncate text-sm font-bold tracking-wide text-white">{businessName}</span>
             )}
           </div>
 
@@ -328,11 +328,11 @@ export default function DashboardShell({
                 aria-label="Notifikasi"
                 aria-expanded={menu === "bell"}
                 onClick={() => setMenu(menu === "bell" ? null : "bell")}
-                className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+                className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 text-white hover:bg-white/25"
               >
                 <Bell className="h-5 w-5" aria-hidden="true" />
                 {pendingTotal > 0 && (
-                  <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[11px] font-bold leading-none text-white ring-2 ring-white">
+                  <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[11px] font-bold leading-none text-white ring-2 ring-brand-600">
                     {pendingTotal}
                   </span>
                 )}
@@ -362,7 +362,7 @@ export default function DashboardShell({
                 aria-label="Menu akun"
                 aria-expanded={menu === "user"}
                 onClick={() => setMenu(menu === "user" ? null : "user")}
-                className="flex h-10 items-center gap-1 rounded-xl bg-zinc-100 pl-1.5 pr-2 text-zinc-600 hover:bg-zinc-200"
+                className="flex h-10 items-center gap-1 rounded-xl bg-white/15 pl-1.5 pr-2 text-white hover:bg-white/25"
               >
                 <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand-100 text-sm font-bold text-brand-700">{initial}</span>
                 <ChevronDown className="h-4 w-4" aria-hidden="true" />
@@ -386,7 +386,7 @@ export default function DashboardShell({
         </header>
 
         {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="flex items-center gap-2 border-b border-zinc-200 bg-white px-4 py-2.5 text-xs text-zinc-500 sm:px-6 print:hidden">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-2 bg-transparent px-4 pt-4 text-xs text-zinc-500 sm:px-6 print:hidden">
           <Link href={base} className="hover:text-zinc-800">
             Home
           </Link>
