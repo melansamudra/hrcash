@@ -1,7 +1,7 @@
 # Serah Terima Pekerjaan — HrCash / ABSENKU
 
 Dokumen ini merangkum seluruh pekerjaan di repo `melansamudra/hrcash` agar bisa diteruskan oleh orang lain tanpa konteks sebelumnya.
-Disusun dari isi repo dan riwayat git (99 commit, commit terakhir `98d68d5`). Detail teknis per modul ada di `README.md`.
+Disusun dari isi repo dan riwayat git (101 commit, commit terakhir `06c3ec9`). Detail teknis per modul ada di `README.md`.
 
 ## 1. Gambaran produk
 
@@ -59,7 +59,7 @@ Aplikasi SaaS berdiri sendiri untuk **absensi selfie, data karyawan (SDM), dan p
 npm install
 cp .env.example .env.local   # isi variabel, lihat bagian 4
 npx supabase link --project-ref <project-ref>
-npx supabase db push         # 35 migration, urut nama file
+npx supabase db push         # 34 migration, urut nama file
 npm run dev
 npm test                     # vitest
 npm run lint
@@ -85,7 +85,7 @@ Serah terimakan juga akses ke: akun Supabase, proyek Vercel (+ domain), akun Res
 
 ## 5. Database
 
-35 migration di `supabase/migrations/` (urutan dan isi sampai migration ke-18 ada di README; sisanya berurutan: lokasi/reimbursement/surat/tugas, identitas & foto karyawan, pengumuman, master karyawan, riwayat, penolakan presensi, KPI, status pembayaran, role HR/staff, pencarian user via email, jadwal mingguan, alasan telat, cuti carry-over, slip ad-hoc).
+34 migration di `supabase/migrations/` (urutan dan isi sampai migration ke-18 ada di README; sisanya berurutan: lokasi/reimbursement/surat/tugas, identitas & foto karyawan, pengumuman, master karyawan, riwayat, penolakan presensi, KPI, status pembayaran, role HR/staff, pencarian user via email, jadwal mingguan, alasan telat, cuti carry-over, slip ad-hoc).
 Catatan: dua file berawalan `20261018100000_` (late_reason dan leave_carryover) berbagi timestamp; keduanya bekerja tetapi urutan antar keduanya mengikuti nama file.
 `src/lib/types/database.ts` masih ditulis manual; ganti dengan `supabase gen types typescript` setelah proyek tertaut.
 
